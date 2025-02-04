@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Glowing Atom Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background: radial-gradient(circle, #000020, #000000); }
+        canvas { display: block; }
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 24px;
+            color: cyan;
+            font-family: Arial, sans-serif;
+            z-index: 10;
+        }
+        .logo {
+            font-size: 50px;
+            font-weight: bold;
+            text-shadow: 0 0 20px cyan;
+            margin-bottom: 20px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid lightgray;
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loading-screen">
+        <div class="logo">OA LAB</div>
+        <div class="spinner"></div>
+    </div>
+    <script>
+        function hideLoading() {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('canvas-container').style.display = 'block';
+        }
+        setTimeout(hideLoading, 2000);
+    </script>
+    <div id="canvas-container" style="display: none;">
+        <script>
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+
+            camera.position.z = 5;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+        </script>
+    </div>
+</body>
+</html>
